@@ -1,0 +1,135 @@
+* {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+:root {
+	--hue: 223;
+	--bg: hsl(var(--hue), 90%, 90%);
+	--fg: hsl(var(--hue), 90%, 10%);
+	--trans-dur: 0.3s;
+	--trans-timing: cubic-bezier(0.65, 0, 0.35, 1);
+	font-size: calc(40px + (80 - 40) * (100vw - 320px) / (2560 - 320));
+}
+body,
+input {
+	font: 1em/1.5 sans-serif;
+}
+body {
+	background-color: var(--bg);
+	color: var(--fg);
+	display: grid;
+	place-items: center;
+	height: 100vh;
+	transition: background-color var(--trans-dur), color var(--trans-dur);
+}
+.switch,
+.switch__input {
+	-webkit-tap-highlight-color: transparent;
+}
+.switch {
+	position: relative;
+	width: 3em;
+	height: 1.5em;
+}
+.switch__check {
+	display: block;
+	transform: translateX(0) rotate(0);
+	transition: transform var(--trans-dur) var(--trans-timing);
+	z-index: 1;
+}
+.switch__check-line {
+	transform: translate(0, 0);
+	transition: stroke var(--trans-dur) var(--trans-timing),
+		stroke-dashoffset var(--trans-dur) var(--trans-timing),
+		transform var(--trans-dur) var(--trans-timing);
+}
+.switch__input {
+	background-color: hsla(var(--hue), 90%, 50%, 0);
+	border-radius: 1.5em;
+	box-shadow: 0 0 0 0.0625em hsl(var(--hue), 10%, 50%) inset,
+		0 0.25em 1em hsla(var(--hue), 90%, 10%, 0);
+	cursor: pointer;
+	display: block;
+	outline: transparent;
+	width: 100%;
+	height: 100%;
+	transition: background-color var(--trans-dur) var(--trans-timing),
+		box-shadow var(--trans-dur) var(--trans-timing);
+	-webkit-appearance: none;
+	appearance: none;
+}
+.switch__input:before,
+.switch__input:after {
+	content: "";
+	display: block;
+}
+.switch__input:before {
+	background-color: hsl(0, 0%, 100%);
+	border-radius: 50%;
+	box-shadow: 0 0.125em 0.25em hsla(var(--hue), 90%, 10%, 0);
+	transition: box-shadow var(--trans-dur) var(--trans-timing),
+		transform var(--trans-dur) var(--trans-timing);
+}
+.switch__input:after {
+	border-radius: 0.75em;
+	box-shadow: 0 0 0 0.125em hsla(var(--hue), 90%, 70%, 0);
+	width: 100%;
+	height: 100%;
+	transition: box-shadow 0.15s linear;
+}
+.switch__input:focus-visible:after {
+	box-shadow: 0 0 0 0.125em hsla(var(--hue), 90%, 70%, 1);
+}
+.switch__check,
+.switch__input:before {
+	position: absolute;
+	top: 0.25em;
+	left: 0.25em;
+	width: 1em;
+	height: 1em;
+}
+.switch__input:checked {
+	background-color: hsla(var(--hue), 90%, 50%, 1);
+	box-shadow: 0 0 0 0.0625em hsl(var(--hue), 90%, 50%) inset,
+		0 0.25em 1em hsla(var(--hue), 90%, 10%, 0.5);
+}
+.switch__input:checked:before {
+	box-shadow: 0 0.125em 0.25em hsla(var(--hue), 90%, 10%, 0.5);
+	transform: translateX(1.5em);
+}
+.switch__input:checked + .switch__check {
+	animation: switch-check var(--trans-dur) var(--trans-timing);
+	transform: translateX(1.5em) rotate(-225deg);
+}
+.switch__input:checked + .switch__check .switch__check-line {
+	stroke: hsl(var(--hue), 90%, 50%);
+	stroke-dashoffset: 0;
+	transform: translate(-1px, -1px);
+	transition-delay: 0s, calc(var(--trans-dur) / 2), 0s;
+}
+.switch__sr {
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: hsl(var(--hue), 90%, 10%);
+		--fg: hsl(var(--hue), 90%, 90%);
+	}
+}
+
+/* Animations */
+@keyframes switch-check {
+	from {
+		transform: translateX(0) rotate(0);
+	}
+	to {
+		transform: translateX(1.5em) rotate(135deg);
+	}
+}
